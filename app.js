@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+const userRoutes = require('./routes/user');
+
 const dotenv = require('dotenv');
 dotenv.config();
 const NAME = process.env.USER;
@@ -27,7 +29,7 @@ app.use((req, res, next) => {
 
 
 
-
+app.use('/api/auth', userRoutes);
 
 module.exports = app;
 
