@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
         const userId = decodedToken.userId;
         req.auth = {userId};
         if(req.body.userId && req.body.userId !== userId){
-            throw 'User Id non valable';
+            throw 'User Id non valable'; // res.status(403).json({error: 'Unauthorized request'});
         } else {
             console.log("C'est bon le 'auth' fonctionne !")
             next();
