@@ -69,14 +69,14 @@ exports.likeSauce = (req, res, next) => {
     const id_user = req.body.userId;
     switch(req.body.like){
         case 0:
-            Sauce.findOne({_id: req.params.id})
+            Sauce.findOne({_id: id_sauce})
             .then(sauce => {
-            if(sauce.usersLiked.includes(req.body.userId)){
-                Sauce.updateOne({_id: req.params.id}, {$pull:{usersLiked: req.body.userId}, $inc:{likes: -1}})
+            if(sauce.usersLiked.includes(id_user)){
+                Sauce.updateOne({_id: id_sauce}, {$pull:{usersLiked: id_user}, $inc:{likes: -1}})
                 .then(() => res.status(200).json({message: 'Cest tout good'}))
                 .catch(error => res.status(400).json({error}));
             } else {
-                Sauce.updateOne({_id: req.params.id}, {$pull:{usersDisliked: req.body.userId}, $inc:{dislikes: -1}})
+                Sauce.updateOne({_id: id_sauce}, {$pull:{usersDisliked: id_user}, $inc:{dislikes: -1}})
                 .then(() => res.status(200).json({message: 'Cest tout good'}))
                 .catch(error => res.status(400).json({error}));
             }
@@ -85,15 +85,18 @@ exports.likeSauce = (req, res, next) => {
             break;
             
         case 1: 
-            Sauce.updateOne({_id: req.params.id}, {$inc:{likes: 1}, $push:{usersLiked: req.body.userId}})
+            Sauce.updateOne({_id: id_sauce}, {$inc:{likes: 1}, $push:{usersLiked: id_user}})
             .then(() => res.status(200).json({message: 'Cest tout good'}))
             .catch(error => res.status(400).json({error}));
             break;
         case -1:
-            Sauce.updateOne({_id: req.params.id}, {$inc:{dislikes: 1}, $push:{usersDisliked: req.body.userId}})
+            Sauce.updateOne({_id: id_sauce}, {$inc:{dislikes: 1}, $push:{usersDisliked: id_user}})
             .then(() => res.status(200).json({message: 'Cest tout good'}))
             .catch(error => res.status(400).json({error}));
             break;
+        default:
+            console.log("Bug frontend??");
+            //break;
     }
 };
 
