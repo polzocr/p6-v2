@@ -10,10 +10,11 @@ dotenv.config();
 const NAME = process.env.USER;
 const MDP = process.env.SECRET_PASS;
 const BDD = process.env.CLUSTER_NAME;
+const BDD_NAME = process.env.DB_NAME;
 
 const app = express();
 
-mongoose.connect("mongodb+srv://"+ NAME +":" + MDP +"@"+ BDD + ".j5cho.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+mongoose.connect("mongodb+srv://"+ NAME +":" + MDP +"@"+ BDD + ".j5cho.mongodb.net/"+BDD_NAME+"?retryWrites=true&w=majority",
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))

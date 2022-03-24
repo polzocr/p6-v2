@@ -67,7 +67,8 @@ exports.deleteSauce = (req, res, next) => {
 exports.likeSauce = (req, res, next) => {
     const id_sauce = req.params.id;
     const id_user = req.body.userId;
-    switch(req.body.like){
+    if(req.body.userId){
+        switch(req.body.like){
         case 0:
             Sauce.findOne({_id: id_sauce})
             .then(sauce => {
@@ -85,19 +86,39 @@ exports.likeSauce = (req, res, next) => {
             break;
             
         case 1: 
-            Sauce.updateOne({_id: id_sauce}, {$inc:{likes: 1}, $push:{usersLiked: id_user}})
-            .then(() => res.status(200).json({message: 'Cest tout good'}))
-            .catch(error => res.status(400).json({error}));
-            break;
+            Sauce.findOne({_id: id_sauce})
+            .then(sauce => {
+                if(sauce.usersDisliked.includes(id_user) || sauce.usersLiked.includes(id_user)){
+                    res.status(400).json({error: new Error('Action impossible à effectuer !')})
+                } else {
+                    Sauce.updateOne({_id: id_sauce}, {$inc:{likes: 1}, $push:{usersLiked: id_user}})
+                    .then(() => res.status(200).json({message: 'Cest tout good'}))
+                    .catch(error => res.status(400).json({error}));
+                }
+            })
+            .catch(error => res.status(400).json({error}))
+            break;            
         case -1:
-            Sauce.updateOne({_id: id_sauce}, {$inc:{dislikes: 1}, $push:{usersDisliked: id_user}})
-            .then(() => res.status(200).json({message: 'Cest tout good'}))
-            .catch(error => res.status(400).json({error}));
+            Sauce.findOne({_id: id_sauce})
+            .then(sauce => {
+                if(sauce.usersDisliked.includes(id_user) || sauce.usersLiked.includes(id_user)){
+                    res.status(400).json({error: new Error('Action impossible à effectuer !')})
+                } else {
+                    Sauce.updateOne({_id: id_sauce}, {$inc:{dislikes: 1}, $push:{usersDisliked: id_user}})
+                    .then(() => res.status(200).json({message: 'Cest tout good'}))
+                    .catch(error => res.status(400).json({error}));
+                }
+            })
+            .catch(error => res.status(400).json({error}))
             break;
         default:
             console.log("Bug frontend??");
+            res.status(400).json({error: new Error('Bug frontend ?')});
             //break;
-    }
+        }
+    } else {
+        res.status(404).json({error: new Error('Utilisateur non trouvé')});
+    }  
 };
 
  /*

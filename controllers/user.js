@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const dotenv = require('dotenv').config();
+const TOKEN = process.env.TOKEN;
 
 
 exports.signup = (req, res, next) => {
@@ -35,11 +37,12 @@ exports.login = (req,res, next) => {
             if(!valid) {
                 return res.status(401).json({error: "Mot de passe incorrect"});
             }
+            //res.setHeader('Authorization', 'Bearer '+ letokenenquestion);
             res.status(200).json({
                 userId: user._id,
                 token: jwt.sign(
                     {userId: user._id},
-                    'RANDOM_TOKEN_SECRET',
+                    TOKEN,
                     {expiresIn: '24h'}
                 )
             });
