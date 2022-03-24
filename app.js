@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require("path");
+const helmet = require('helmet');
 
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
@@ -13,6 +14,7 @@ const BDD = process.env.CLUSTER_NAME;
 const BDD_NAME = process.env.DB_NAME;
 
 const app = express();
+app.use(helmet());
 
 mongoose.connect("mongodb+srv://"+ NAME +":" + MDP +"@"+ BDD + ".j5cho.mongodb.net/"+BDD_NAME+"?retryWrites=true&w=majority",
   { useNewUrlParser: true,
