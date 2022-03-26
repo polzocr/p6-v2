@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require("path");
 const helmet = require('helmet');
+const limitator = require('express-rate-limit');
 
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
@@ -11,6 +12,8 @@ dotenv.config();
 const DATA_BASE = process.env.DATA_BASE_CONNEXION
 
 const app = express();
+
+
 app.use(helmet());
 
 mongoose.connect(DATA_BASE,
@@ -31,6 +34,15 @@ app.use((req, res, next) => {
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
+const rateLimit = limitator({
+  windowMs: 15*60* 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message : "Trop de requêtes"
+})
+
+app.use(rateLimit);
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoutes);
 
