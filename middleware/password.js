@@ -7,6 +7,7 @@ schema
 .has().uppercase()
 .has().lowercase()
 .has().digits(1)
+.has().symbols(1)
 .is().not().oneOf(['Password123', 'Azerty123', '123Password'])
 
 module.exports = (req,res,next) => {
@@ -15,6 +16,6 @@ module.exports = (req,res,next) => {
         next();
     } else {
         console.log(schema.validate(password, {details: true}));
-        res.status(400).json({error : 'Le mot de passe est incorrect'});
+        res.status(400).json({error : 'Le mot de passe est trop simple'});
     }
 }
