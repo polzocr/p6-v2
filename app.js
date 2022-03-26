@@ -11,7 +11,7 @@ dotenv.config();
 const DATA_BASE = process.env.DATA_BASE_CONNEXION
 
 const app = express();
-app.use(helmet());
+//app.use(helmet());
 
 mongoose.connect(DATA_BASE,
   { useNewUrlParser: true,
