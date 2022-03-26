@@ -9,6 +9,7 @@ schema
 .has().digits(1)
 .has().symbols(1)
 .is().not().oneOf(['Password123', 'Azerty123', '123Password'])
+//.has().regex()
 
 module.exports = (req,res,next) => {
     const password = req.body.password;
