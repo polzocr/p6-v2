@@ -8,15 +8,12 @@ const sauceRoutes = require('./routes/sauce');
 
 const dotenv = require('dotenv');
 dotenv.config();
-const NAME = process.env.USER;
-const MDP = process.env.SECRET_PASS;
-const BDD = process.env.CLUSTER_NAME;
-const BDD_NAME = process.env.DB_NAME;
+const DATA_BASE = process.env.DATA_BASE_CONNEXION
 
 const app = express();
 app.use(helmet());
 
-mongoose.connect("mongodb+srv://"+ NAME +":" + MDP +"@"+ BDD + ".j5cho.mongodb.net/"+BDD_NAME+"?retryWrites=true&w=majority",
+mongoose.connect(DATA_BASE,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
