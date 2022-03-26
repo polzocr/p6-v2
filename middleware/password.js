@@ -1,4 +1,5 @@
 const PasswordValidator = require('password-validator');
+const sanitize = require('mongo-sanitize');
 
 const schema = new PasswordValidator();
 schema
@@ -12,7 +13,7 @@ schema
 //.has().regex()
 
 module.exports = (req,res,next) => {
-    const password = req.body.password;
+    const password = sanitize(req.body.password);
     if (schema.validate(password)) {
         next();
     } else {
