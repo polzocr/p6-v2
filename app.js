@@ -32,6 +32,8 @@ app.use((req, res, next) => {
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
+
+
 const rateLimit = limitator({
   windowMs: 15*60* 1000,
   max: 200,
