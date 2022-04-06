@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require("path");
-const helmet = require('helmet');
 const limitator = require('express-rate-limit');
 
 const userRoutes = require('./routes/user');
@@ -14,7 +13,6 @@ const DATA_BASE = process.env.DATA_BASE_CONNEXION
 const app = express();
 
 
-app.use(helmet());
 
 mongoose.connect(DATA_BASE,
   { useNewUrlParser: true,
